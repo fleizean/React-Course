@@ -15,7 +15,7 @@ export default function Categories() {
 
   return (
     <Dropdown
-      text="Filter By Category"
+      text=""
       icon="filter"
       floating
       labeled

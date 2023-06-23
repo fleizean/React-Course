@@ -8,6 +8,8 @@ import CartDetail from '../Pages/CartDetail';
 import { ToastContainer } from 'react-toastify';
 import Error404 from '../Pages/Error404';
 import ProductAdd from '../Pages/ProductAdd';
+import ProductDelete from '../Pages/ProductDelete';
+
 
 export default function Dashboard() {
     const location = useLocation();
@@ -32,9 +34,9 @@ export default function Dashboard() {
                             <Route path="/products/:id" element={<ProductDetail />} />
                             <Route path="/cart" element={<CartDetail />} />
                             <Route path="/product/add" element={<ProductAdd />} />
+                            <Route path="/product/delete" element={<ProductDelete />} />
                             <Route path="*" element={<Error404 />} />
                             <Route path="/404" element={<Error404 />} />
-
                         </Routes>
                     </Grid.Column>
                 </Grid.Row>

@@ -1,79 +1,54 @@
-import React from 'react'
+import React from 'react';
 import '../assets/Dashboard.css';
-import { Formik, Form, Field, ErrorMessage } from 'formik'
-import * as Yup from "yup" // birden fazla fonksiyon dahil edilmiş Yup. ile erişim sağlanıyor
-import { FormField, Button, Label } from "semantic-ui-react"
+import { Formik, Form } from 'formik';
+import * as Yup from "yup";
+import { Button } from "semantic-ui-react";
+import TrendyolTextInput from "../utilities/customFormControls/TrendyolTextInput";
+import axios from "axios";
 
 export default function ProductAdd() {
-  const initalValues = { productName: "", unitPrice: 10, unitsInStock: 5, quantityPerUnit: "", productImage: "", categoryName: "none" }
+  const initialValues = {
+    productName: "",
+    unitPrice: 10,
+    unitsInStock: 5,
+    quantityPerUnit: "",
+    productImage: "",
+    categoryName: "none"
+  };
+
   const schema = Yup.object({
-    productName: Yup.string().required("Ürün adı zorunlu"), // metinsel ve zorunlu alan
+    productName: Yup.string().required("Ürün adı zorunlu"),
     unitPrice: Yup.number().required("Ürün fiyatı zorunlu"),
     unitsInStock: Yup.number().required("Ürün stok sayısı zorunlu"),
     quantityPerUnit: Yup.string().required("Ürün stok durumu zorunlu"),
     categoryName: Yup.string().required("Ürün kategori ismi zorunlu"),
     productImage: Yup.string().required("Ürün resimi zorunlu")
-  })
+  });
+
+  const handleSubmit = async (values) => {
+    try {
+      await axios.post("https://localhost:23578/api/Products", values);
+      console.log("Product added successfully!");
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
+  };
 
   return (
-
     <Formik
-      initialValues={initalValues}
+      initialValues={initialValues}
       validationSchema={schema}
-      onSubmit={(values) => {
-        console.log(values)
-      }}
+      onSubmit={handleSubmit}
     >
       <div className="container">
         <div className="card">
           <Form className="ui form">
-            <FormField>
-              <Field name="productName" placeholder="Ürün adı" />
-              <ErrorMessage name="productName" render={error =>
-                <Label pointing basic color="red" content={error}></Label>
-              }></ErrorMessage>
-            </FormField>
-            <FormField>
-              <Field name="unitPrice" placeholder="Ürün fiyatı" />
-              <ErrorMessage name="unitPrice" render={error =>
-                <Label pointing basic color="red" content={error}></Label>
-              }></ErrorMessage>
-            </FormField>
-            <FormField>
-              <Field name="unitsInStock" placeholder="Ürün stoğu" />
-              <ErrorMessage name="unitsInStock" render={error =>
-                <Label pointing basic color="red" content={error}></Label>
-              }></ErrorMessage>
-            </FormField>
-            <FormField>
-              <Field name="quantityPerUnit" placeholder="Ürün durumu" />
-              <ErrorMessage name="quantityPerUnit" render={error =>
-                <Label pointing basic color="red" content={error}></Label>
-              }></ErrorMessage>
-            </FormField>
-            <FormField>
-              <Field name="productImage" placeholder="Ürün resimi" />
-              <ErrorMessage name="productImage" render={error =>
-                <Label pointing basic color="red" content={error}></Label>
-              }></ErrorMessage>
-            </FormField>
-            {/* <FormField>
-              <input
-                type="file"
-                id="productImage"
-                name="productImage"
-                onChange={(event) => {
-                  const file = event.currentTarget.files[0];
-                  formik.setFieldValue('productImage', file);
-                }}
-              />
-            </FormField> */}
-            <FormField>
-              <Field name="categoryName" placeholder="Ürün kategorisi" />
-              <ErrorMessage name="categoryName" render={error =>
-                <Label pointing basic color="red" content={error}></Label>
-              }></ErrorMessage>
-            </FormField>
+            <TrendyolTextInput name="productName" placeholder="Ürün adı" />
+            <TrendyolTextInput name="unitPrice" placeholder="Ürün fiyatı" />
+            <TrendyolTextInput name="unitsInStock" placeholder="Ürün adeti" />
+            <TrendyolTextInput name="quantityPerUnit" placeholder="Ürün bilgisi" />
+            <TrendyolTextInput name="productImage" placeholder="Ürün resimi" />
+            <TrendyolTextInput name="categoryName" placeholder="Kategori adı" />
             <Button color="green" type="submit">
               Ekle
             </Button>
@@ -81,6 +56,5 @@ export default function ProductAdd() {
         </div>
       </div>
     </Formik>
-
-  )
+  );
 }
